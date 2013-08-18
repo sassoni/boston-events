@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+{% autoescape true %}
+<html>
+<head>
+    <link type="text/css" rel="stylesheet" href="/stylesheets/styles.css" />
+    <title>Events</title>
+</head>
+<body>
+    <h1>{{ today_date }}</h1>
+    <div class='test_class'>
+    <table>
+    {% for event in events %}
+    <tr>
+      <td>{{ event.title }}</td>
+      <td>{{ event.date }}</td>
+    </tr>
+    {% endfor %}
+    </table>
+    </div>
+</body>
+</html>
+{% endautoescape %}

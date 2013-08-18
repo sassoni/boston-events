@@ -1,0 +1,14 @@
+body {	
+    overflow-y: scroll;
+    color: #333333;
+    font-family: "Century Gothic", sans-serif;
+    padding: 10px;
+}
+
+tr:nth-child(2n+1) {
+  background-color: #99ff99;
+}
+
+.test_class {
+
+}

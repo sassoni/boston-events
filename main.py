@@ -14,11 +14,51 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import os
 import webapp2
+import logging
+import feedparser
+import jinja2
+import datetime
 
+now = datetime.datetime.now()
+
+def test_class():
+    e = feedparser.parse('http://events.mit.edu/rss/index.html')
+#    print e.feed.date
+#    print e['feed']['title']
+	
+    return e.entries
+# print e.feed.date_parsed
+# print e.feed.updated_parsed
+
+#print e.entries[0].title
+
+ #   for entry in e.entries:
+ #       logging.debug(entry.title)
+		
+
+JINJA_ENVIRONMENT = jinja2.Environment(
+    loader=jinja2.FileSystemLoader(os.path.dirname(__file__)),
+    extensions=['jinja2.ext.autoescape'])
+		
 class MainHandler(webapp2.RequestHandler):
     def get(self):
-        self.response.write('Hello world!')
+        #self.response.write('Hlala!')
+        logging.debug("debug test")
+        eventslist = test_class()
+		
+        template_values = {
+            'events': eventslist,
+            'today_date': now,
+        }
+
+        template = JINJA_ENVIRONMENT.get_template('index.html')
+        self.response.write(template.render(template_values))
+        #for entry in eventslist:
+        #    self.response.out.write(entry.title)
+        #    self.response.out.write('<br>')
+
 
 app = webapp2.WSGIApplication([
     ('/', MainHandler)
