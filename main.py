@@ -1,19 +1,5 @@
 #!/usr/bin/env python
-#
-# Copyright 2007 Google Inc.
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-#
+
 import os
 import webapp2
 import logging
@@ -21,32 +7,49 @@ import feedparser
 import jinja2
 import datetime
 
-now = datetime.datetime.now()
+# today's date
+today = datetime.date.today()
+now = today.strftime("%A %d %B %Y")
 
-def test_class():
-    e = feedparser.parse('http://events.mit.edu/rss/index.html')
-#    print e.feed.date
-#    print e['feed']['title']
-	
-    return e.entries
-# print e.feed.date_parsed
-# print e.feed.updated_parsed
-
-#print e.entries[0].title
-
- #   for entry in e.entries:
- #       logging.debug(entry.title)
-		
+rss_feeds_list = ['http://www.trumba.com/calendars/cob-calendar.rss',  
+                  'http://events.mit.edu/rss/index.html']
 
 JINJA_ENVIRONMENT = jinja2.Environment(
     loader=jinja2.FileSystemLoader(os.path.dirname(__file__)),
     extensions=['jinja2.ext.autoescape'])
+	
+	
+def parse_feeds():
+    allevents = []
+    
+    for feed in rss_feeds_list:
+        e = feedparser.parse(feed)
+        
+        for entry in e.entries:
+            allevents.append(entry)
+    
+    return allevents
+    
+#return e.entries
+# print e.feed.date_parsed
+# print e.feed.updated_parsed
+#print e.entries[0].title
+#print e.feed.date
+#print e['feed']['title']
+#for entry in e.entries:
+#logging.debug(entry.title)
+		
+
+
 		
 class MainHandler(webapp2.RequestHandler):
     def get(self):
         #self.response.write('Hlala!')
-        logging.debug("debug test")
-        eventslist = test_class()
+        logging.info("debug test")
+        eventslist = parse_feeds()
+
+        #for event in eventslist:
+        #    logging.info(event)
 		
         template_values = {
             'events': eventslist,
