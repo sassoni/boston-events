@@ -7,6 +7,7 @@ import feedparser
 import jinja2
 import datetime
 
+
 # today's date
 today = datetime.date.today()
 now = today.strftime("%A %d %B %Y")
@@ -30,26 +31,14 @@ def parse_feeds():
     
     return allevents
     
-#return e.entries
-# print e.feed.date_parsed
-# print e.feed.updated_parsed
-#print e.entries[0].title
-#print e.feed.date
-#print e['feed']['title']
-#for entry in e.entries:
-#logging.debug(entry.title)
-		
-
-
 		
 class MainHandler(webapp2.RequestHandler):
     def get(self):
-        #self.response.write('Hlala!')
         logging.info("debug test")
         eventslist = parse_feeds()
 
-        #for event in eventslist:
-        #    logging.info(event)
+        for event in eventslist:
+            logging.info(event.title)
 		
         template_values = {
             'events': eventslist,
